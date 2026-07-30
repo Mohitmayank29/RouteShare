@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">RouteShare</string>
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="phone">Phone Number</string>
+    <string name="email">Email</string>
+    <string name="save">Save</string>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">मैप्सवन</string>
+    <string name="login">लॉगिन</string>
+    <string name="username">उपयोगकर्ता नाम</string>
+    <string name="phone">फ़ोन नंबर</string>
+    <string name="email">ईमेल</string>
+    <string name="save">सहेजें</string>
+</resources>

@@ -1,0 +1,16 @@
+# Build outputs, cache, local props, IDE settings, and Kotlin files
+.gradle/
+/build/
+/*/build/
+.kotlin/
+local.properties
+*.jks
+*.keystore
+.idea/workspace.xml
+.idea/caches/
+.idea/libraries/
+*.iml
+*.log
+captures/
+.idea/
+
