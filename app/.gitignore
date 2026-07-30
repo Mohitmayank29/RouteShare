@@ -13,5 +13,7 @@ local.properties
 *.log
 captures/
 .idea/
-google-services.json
+app/google-services.json
+# Gradle local properties (if you store secrets here)
+gradle.properties
 
