@@ -13,4 +13,5 @@ local.properties
 *.log
 captures/
 .idea/
+google-services.json
 

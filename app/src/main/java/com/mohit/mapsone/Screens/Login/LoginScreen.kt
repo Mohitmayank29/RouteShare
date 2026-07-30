@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mohit.mapsone.R
+import com.mohit.mapsone.common.CustomOutlinedTextField
 import com.mohit.mapsone.common.PrimaryButton
 
 @Composable
@@ -107,76 +108,26 @@ fun LoginScreen(
                 Column(
                     modifier = Modifier.padding(10.dp)
                 ) {
-                    // Email Field
-                    Text(
-                        text = "Email Address",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = darkText,
-                        modifier = Modifier.padding(bottom = 4.dp)
-                    )
-                    OutlinedTextField(
+                    // --- Email Field ---
+                    CustomOutlinedTextField(
+                        label = "Email Address",
+                        placeholder = "example@domain.com",
                         value = email,
                         onValueChange = { email = it },
-                        placeholder = { Text("example@domain.com", color = Color.LightGray) },
-                        leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Default.Email,
-                                contentDescription = "Email Icon",
-                                tint = primaryBlue
-                            )
-                        },
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                        shape = RoundedCornerShape(12.dp),
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = primaryBlue,
-                            unfocusedBorderColor = Color(0xFFE2E8F0)
-                        )
+                        leadingIcon = Icons.Default.Email,
+                        keyboardType = KeyboardType.Email
                     )
-
                     Spacer(modifier = Modifier.height(10.dp))
-
-                    // Password Field
-                    Text(
-                        text = "Password",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = darkText,
-                        modifier = Modifier.padding(bottom = 4.dp)
-                    )
-                    OutlinedTextField(
+                    // --- Password Field ---
+                    CustomOutlinedTextField(
+                        label = "Password",
+                        placeholder = "••••••••",
                         value = password,
                         onValueChange = { password = it },
-                        placeholder = { Text("••••••••", color = Color.LightGray) },
-                        leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Default.Lock,
-                                contentDescription = "Password Icon",
-                                tint = primaryBlue
-                            )
-                        },
-                        trailingIcon = {
-                            IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
-                                Icon(
-                                    imageVector = if (isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                                    contentDescription = "Toggle Password Visibility",
-                                    tint = Color.Gray
-                                )
-                            }
-                        },
-                        visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                        shape = RoundedCornerShape(12.dp),
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = primaryBlue,
-                            unfocusedBorderColor = Color(0xFFE2E8F0)
-                        )
+                        leadingIcon = Icons.Default.Lock,
+                        isPassword = true,
+                        keyboardType = KeyboardType.Password
                     )
-
                     Spacer(modifier = Modifier.height(4.dp))
 
                     // Remember Me & Forgot Password
