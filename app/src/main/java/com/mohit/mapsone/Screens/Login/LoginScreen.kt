@@ -28,22 +28,28 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.mohit.mapsone.R
 import com.mohit.mapsone.common.CustomOutlinedTextField
+import com.mohit.mapsone.common.DashboardTopBar
 import com.mohit.mapsone.common.PrimaryButton
+import com.mohit.mapsone.enums.TopBarType
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
-    onLoginSuccess: () -> Unit,
-    onNavigateToSignUp: () -> Unit,
-    onForgotPasswordClick: () -> Unit
+    navController: NavHostController,
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isPasswordVisible by remember { mutableStateOf(false) }
     var rememberMe by remember { mutableStateOf(false) }
     var isLoading by remember { mutableStateOf(false) }
-
+    val scrollBehavior =
+        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(
+            rememberTopAppBarState()
+        )
     // Color Palette
     val primaryBlue = Color(0xFF0077FF)
     val darkText = Color(0xFF0D1B2A)
@@ -140,7 +146,7 @@ fun LoginScreen(
                             Checkbox(
                                 checked = rememberMe,
                                 onCheckedChange = { rememberMe = it },
-                                colors = CheckboxDefaults.colors(checkedColor = primaryBlue)
+                                colors = CheckboxDefaults.colors(checkedColor = MaterialTheme.colorScheme.primary)
                             )
                             Text(
                                 text = "Remember me",
@@ -154,18 +160,15 @@ fun LoginScreen(
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
                             color = primaryBlue,
-                            modifier = Modifier.clickable { onForgotPasswordClick() }
+                            modifier = Modifier.clickable {  }
                         )
                     }
                     Spacer(modifier = Modifier.height(10.dp))
                     PrimaryButton(
                         text = "Log In",
                         isLoading = isLoading,
-                        onClick = {
-                            isLoading = true
-                            onLoginSuccess()
-                                  },
-
+                        onClick = { isLoading = true },
+                        containerColor = MaterialTheme.colorScheme.primary
                         )
                 }
             }
@@ -196,7 +199,7 @@ fun LoginScreen(
                     .fillMaxWidth()
                     .height(48.dp),
                 shape = RoundedCornerShape(12.dp),
-                border = BorderStroke(1.dp,primaryBlue),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
                 colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFF64748B))
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -228,8 +231,8 @@ fun LoginScreen(
                     text = "Sign Up",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
-                    color = primaryBlue,
-                    modifier = Modifier.clickable { onNavigateToSignUp() }
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.clickable {  }
                 )
             }
         }
@@ -239,9 +242,7 @@ fun LoginScreen(
 @Preview
 @Composable
 private fun PreviewLoginScreen() {
-    LoginScreen(
-        onLoginSuccess = {},
-        onNavigateToSignUp = {},
-        onForgotPasswordClick = {}
+    val navController = rememberNavController()
+    LoginScreen(navController
     )
 }

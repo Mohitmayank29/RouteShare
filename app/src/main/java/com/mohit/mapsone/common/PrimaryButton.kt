@@ -31,7 +31,7 @@ fun PrimaryButton(
     icon: ImageVector? = null,
     containerColor: Color = Color(0xFF0077FF), // App's Brand Blue
     contentColor: Color = Color.White,
-    height: Dp = 50.dp,
+    height: Dp = 40.dp,
     shape: Shape = RoundedCornerShape(12.dp)
 ) {
     Button(

@@ -38,8 +38,6 @@ fun CustomOutlinedTextField(
 ) {
     var isPasswordVisible by remember { mutableStateOf(false) }
 
-    val primaryColor = Color(0xFF0077FF)
-    val darkText = Color(0xFF0D1B2A)
     val isError = !errorMessage.isNullOrEmpty()
 
     Column(modifier = modifier.fillMaxWidth()) {
@@ -49,7 +47,7 @@ fun CustomOutlinedTextField(
                 text = label,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = if (isError) MaterialTheme.colorScheme.error else darkText,
+                color = if (isError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.padding(bottom = 4.dp)
             )
         }
@@ -63,7 +61,7 @@ fun CustomOutlinedTextField(
                     Icon(
                         imageVector = it,
                         contentDescription = null,
-                        tint = if (isError) MaterialTheme.colorScheme.error else primaryColor
+                        tint = if (isError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
                     )
                 }
             },
@@ -109,9 +107,9 @@ fun CustomOutlinedTextField(
             shape = RoundedCornerShape(12.dp),
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = primaryColor,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
                 unfocusedBorderColor = Color(0xFFE2E8F0),
-                focusedLabelColor = primaryColor
+                focusedLabelColor = MaterialTheme.colorScheme.primary,
             )
         )
 

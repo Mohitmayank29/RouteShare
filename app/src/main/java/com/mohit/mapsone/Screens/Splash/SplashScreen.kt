@@ -20,13 +20,17 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.mohit.mapsone.R
+import com.mohit.mapsone.navigation.navroute
 import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun AnimatedSplashScreen(
-    onSplashFinished: () -> Unit,
-    modifier: Modifier = Modifier
+    navController: NavHostController,
+    viewModel: SplashViewModel = hiltViewModel()
 ) {
     var logoScaled by remember { mutableStateOf(false) }
 
@@ -41,12 +45,18 @@ fun AnimatedSplashScreen(
 
     LaunchedEffect(Unit) {
         logoScaled = true
-        delay(2500)
-        onSplashFinished()
+        delay(2500.milliseconds)
+        val isLoggedIn = viewModel.isLoggedIn()
+        val destination = if (isLoggedIn) navroute.Dashboard.route else navroute.Login.route
+        navController.navigate(destination){
+            popUpTo(navroute.Splash.route){
+                inclusive = true
+            }
+        }
     }
 
     Box(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
             .background(Color.White),
         contentAlignment = Alignment.Center

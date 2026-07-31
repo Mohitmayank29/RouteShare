@@ -85,5 +85,8 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
     // Material Icons Extended (Needed for Email, Lock, Visibility, VisibilityOff, etc.)
     implementation("androidx.compose.material:material-icons-extended")
+    // Polyline decoding / Geometry support (PolyUtil ke liye)
+    implementation("com.google.maps.android:android-maps-utils:3.8.0")
+    implementation("androidx.navigation:navigation-compose:2.8.5")
 
 }

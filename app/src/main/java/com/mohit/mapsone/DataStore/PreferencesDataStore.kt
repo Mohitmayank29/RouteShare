@@ -1,6 +1,7 @@
 package com.mohit.mapsone.DataStore
 
 import android.content.Context
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -21,9 +22,23 @@ class PreferencesDataStore @Inject constructor(@ApplicationContext private val  
         // 1 for Login
         const val isLogin = "isLogin"
 
+        val IS_LOGGED_IN = booleanPreferencesKey("is_logged_in")
 
 
+    }
+    suspend fun setLoggedIn(isLoggedIn: Boolean) {
+        context.dataStore.edit { prefs ->
+            prefs[IS_LOGGED_IN] = isLoggedIn
+        }
+    }
 
+    // Read Login Status as Flow
+    val isLoggedInFlow: Flow<Boolean> = context.dataStore.data
+        .map { prefs -> prefs[IS_LOGGED_IN] ?: false }
+
+    // Direct Sync Read for Splash Screen
+    suspend fun isLoggedIn(): Boolean {
+        return isLoggedInFlow.first()
     }
 
     // Save data

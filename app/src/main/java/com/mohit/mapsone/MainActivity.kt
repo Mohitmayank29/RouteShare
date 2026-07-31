@@ -22,6 +22,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -37,7 +38,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.firebase.database.DataSnapshot
@@ -45,8 +45,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.mohit.mapsone.Language.LocaleHelper
-import com.mohit.mapsone.Screens.Login.LoginScreen
-import com.mohit.mapsone.Screens.Splash.AnimatedSplashScreen
+import com.mohit.mapsone.navigation.AppNavigation
 import com.mohit.mapsone.ui.theme.MapsoneTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -68,23 +67,8 @@ class MainActivity : ComponentActivity() {
                 CompositionLocalProvider(
                     LocalConfiguration provides updatedConfiguration
                 ) {
-                    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                        var isSplashScreenVisible by remember { mutableStateOf(true) }
-
-                        if (isSplashScreenVisible) {
-                            AnimatedSplashScreen(
-                                onSplashFinished = {
-                                    isSplashScreenVisible = false
-                                },
-                                Modifier.padding(innerPadding)
-                            )
-                        } else {
-                            LoginScreen(
-                                onLoginSuccess = { /* Handle login success */ },
-                                onNavigateToSignUp = { /* Handle navigation to sign up */ },
-                                onForgotPasswordClick = { /* Handle forgot password click */ }
-                            )
-                        }
+                    Surface {
+                        AppNavigation()
                     }
                 }
             }
@@ -144,7 +128,9 @@ fun maonscreenb(modifier: Modifier = Modifier) {
     Column() {
         userddata(modifier)
         LazyColumn(
-            Modifier.fillMaxWidth().padding(10.dp)
+            Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
         ) {
             items(userList.size){ index ->
                 viewdata(userList[index])

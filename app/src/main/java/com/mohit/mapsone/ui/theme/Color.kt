@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.Color
 val White = Color.White
 val Black = Color.Black
 val Error = Color(0xFFD32F2F)
-
+val NegativeRed = Color(0xFFFF6B6B)
 val LightPrimary = Color(0xFFD4A017)      // Golden Yellow
 val LightPrimaryDark = Color(0xFFB8860B)  // Dark Golden
 val LightSecondary = Color(0xFFE8C547)    // Light Gold
