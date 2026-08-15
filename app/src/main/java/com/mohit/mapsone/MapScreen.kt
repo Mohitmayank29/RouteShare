@@ -24,6 +24,7 @@ import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
+import com.mohit.mapsone.common.RouteShareRippleLoader
 import java.util.Locale
 
 @SuppressLint("MissingPermission")
@@ -226,21 +227,10 @@ fun MapScreen(modifier: Modifier = Modifier) {
 //                    )
                 }
             } else {
-                // Loading ya Status screen
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxSize().padding(16.dp)
-                ) {
-                    if (isLoading) {
-                        CircularProgressIndicator()
-                        Spacer(modifier = Modifier.height(16.dp))
-                    }
-                    Text(
-                        text = statusText,
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
+                RouteShareRippleLoader(
+                    isLoading = true,
+                    message = statusText
+                )
             }
         }
     }

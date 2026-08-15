@@ -1,17 +1,22 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 package com.mohit.mapsone.common
+
 import com.mohit.mapsone.R
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.FilterList
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -19,207 +24,168 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mohit.mapsone.enums.TopBarType
-import com.mohit.mapsone.ui.theme.NegativeRed
 
 @Composable
 fun DashboardTopBar(
-    title: String,
+    title: String = "RouteShare",
     modifier: Modifier = Modifier,
-    type: TopBarType = TopBarType.BACK_ONLY, // Default type set to BACK_ONLY
-    scrollBehavior: TopAppBarScrollBehavior? = null,
-    userName: String = "Anubhav",
+    type: TopBarType = TopBarType.DASHBOARD_FLOATING,
+    userName: String = "Mohit",
     unreadNotificationCount: Int = 0,
-    hasActiveFilter: Boolean = false,
 
-    // Actions Lambdas (Search & Filter tabhi dikhenge jab aap pass karenge)
+    // Actions
     onSearchClick: (() -> Unit)? = null,
-    onFilterClick: (() -> Unit)? = null,
     onNotificationClick: (() -> Unit)? = null,
     onAccountClick: (() -> Unit)? = null,
-    onMenuClick: () -> Unit = {},
     onBackClick: () -> Unit = {}
 ) {
-    // Shared Actions Composable for Search, Filter, Notifications, Account
-    val renderActions: @Composable RowScope.() -> Unit = {
-        // 1. Search Icon (Dikhaye jab lambda pass ho)
-        if (onSearchClick != null) {
-            IconButton(onClick = onSearchClick) {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "Search"
-                )
-            }
-        }
+    val primaryBlue = Color(0xFF0077FF)
+    val surfaceVariantColor = Color(0xFFF1F5F9)
 
-        // 2. Filter Icon (Dikhaye jab lambda pass ho)
-        if (onFilterClick != null) {
-            BadgedBox(
-                badge = {
-                    if (hasActiveFilter) {
-                        Badge(
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(8.dp)
+    when (type) {
+        TopBarType.DASHBOARD_FLOATING -> {
+            Surface(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 14.dp, vertical = 8.dp)
+                    .shadow(12.dp, shape = RoundedCornerShape(28.dp)),
+                shape = RoundedCornerShape(28.dp),
+                color = Color.White
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    // 1. LEFT: APP LOGO
+                    Image(
+                        painter = painterResource(id = R.drawable.routeshareonlylogorbg),
+                        contentDescription = "App Logo",
+                        modifier = Modifier
+                            .size(38.dp)
+                            .clip(CircleShape)
+                    )
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    // 2. CENTER: PLAIN TEXT SEARCH (No Icon, Transparent Background)
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(40.dp)
+                            .clickable { onSearchClick?.invoke() }
+                            .padding(horizontal = 8.dp),
+                        contentAlignment = Alignment.CenterStart
+                    ) {
+                        Text(
+                            text = "Search destination...",
+                            color = Color.Gray,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
-                }
-            ) {
-                IconButton(onClick = onFilterClick) {
-                    Icon(
-                        imageVector = Icons.Default.FilterList,
-                        contentDescription = "Filter"
-                    )
-                }
-            }
-        }
 
-        // 3. Notification Icon (If handler passed)
-        if (onNotificationClick != null) {
-            BadgedBox(
-                badge = {
-                    if (unreadNotificationCount > 0) {
-                        Badge(containerColor = NegativeRed, contentColor = Color.White) {
-                            Text(text = if (unreadNotificationCount > 99) "99+" else unreadNotificationCount.toString())
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    // 3. RIGHT: NOTIFICATION & PROFILE
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        IconButton(
+                            onClick = { onNotificationClick?.invoke() },
+                            modifier = Modifier
+                                .size(36.dp)
+                                .clip(CircleShape)
+                                .background(surfaceVariantColor)
+                        ) {
+                            BadgedBox(
+                                badge = {
+                                    if (unreadNotificationCount > 0) {
+                                        Badge(containerColor = Color.Red) {
+                                            Text(
+                                                text = if (unreadNotificationCount > 99) "99+" else unreadNotificationCount.toString(),
+                                                color = Color.White,
+                                                fontSize = 8.sp
+                                            )
+                                        }
+                                    }
+                                },
+                                modifier = Modifier.size(18.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Notifications,
+                                    contentDescription = "Notification",
+                                    tint = Color(0xFF334155),
+                                    modifier = Modifier.size(18.dp)
+                                )
+                            }
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .size(36.dp)
+                                .clip(CircleShape)
+                                .background(primaryBlue)
+                                .clickable { onAccountClick?.invoke() },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = userName.firstOrNull()?.toString() ?: "M",
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 14.sp
+                            )
                         }
                     }
                 }
-            ) {
-                IconButton(onClick = onNotificationClick) {
-                    Icon(
-                        painter = painterResource(R.drawable.routeshareremovebg),
-                        contentDescription = "Notification",
-                        tint = Color.Unspecified,
-                        modifier = Modifier.size(28.dp)
-                    )
-                }
             }
-        }
-
-        // 4. Account Icon (If handler passed)
-        if (onAccountClick != null) {
-            IconButton(onClick = onAccountClick) {
-                Icon(
-                    painter = painterResource(R.drawable.routeshareremovebg),
-                    contentDescription = "Account",
-                    tint = Color.Unspecified,
-                    modifier = Modifier.size(28.dp)
-                )
-            }
-        }
-    }
-
-    when (type) {
-        TopBarType.DASHBOARD_LARGE -> {
-            Box(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .background(
-                        Brush.verticalGradient(
-                            listOf(
-                                MaterialTheme.colorScheme.primary,
-                                MaterialTheme.colorScheme.background
-                            )
-                        )
-                    )
-            ) {
-                scrollBehavior?.let {
-                    LargeTopAppBar(
-                        scrollBehavior = it,
-                        colors = TopAppBarDefaults.largeTopAppBarColors(
-                            containerColor = Color.Transparent,
-                            scrolledContainerColor = Color.Transparent
-                        ),
-                        title = {
-                            val collapsedFraction = it.state.collapsedFraction
-                            Column {
-                                if (collapsedFraction < 0.5f) {
-                                    Text(
-                                        text = "Hello, $userName 👋",
-                                        style = MaterialTheme.typography.labelMedium,
-                                        color = MaterialTheme.colorScheme.primary
-                                    )
-                                }
-                                Text(
-                                    text = title,
-                                    fontSize = 26.sp,
-                                    color = NegativeRed,
-                                    fontWeight = FontWeight.ExtraBold,
-                                )
-                                if (collapsedFraction < 0.5f) {
-                                    Text(
-                                        text = "BUDGET TRACKER",
-                                        color = Color(0xFF888899),
-                                        fontSize = 11.sp,
-                                        fontWeight = FontWeight.SemiBold,
-                                    )
-                                }
-                            }
-                        },
-                        navigationIcon = {
-                            IconButton(onClick = onMenuClick) {
-                                Icon(Icons.Default.Menu, contentDescription = "Menu")
-                            }
-                        },
-                        actions = renderActions
-                    )
-                }
-            }
-        }
-
-        TopBarType.DASHBOARD_SMALL -> {
-            CenterAlignedTopAppBar(
-                modifier = modifier,
-                title = {
-                    Text(
-                        text = title,
-                        fontWeight = FontWeight.SemiBold,
-                        color = NegativeRed,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onMenuClick) {
-                        Icon(Icons.Default.Menu, contentDescription = "Menu")
-                    }
-                },
-                actions = renderActions
-            )
         }
 
         TopBarType.BACK_ONLY -> {
             TopAppBar(
                 modifier = modifier,
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.White),
                 title = {
                     Text(
                         text = title,
-                        fontWeight = FontWeight.SemiBold,
-                        color = NegativeRed,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        color = Color(0xFF0D1B2A),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint = Color.Black
+                        )
                     }
-                },
-                actions = renderActions
+                }
             )
         }
 
         TopBarType.TITLE_ONLY -> {
             TopAppBar(
                 modifier = modifier,
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.White),
                 title = {
                     Text(
                         text = title,
-                        fontWeight = FontWeight.SemiBold,
-                        color = NegativeRed,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        color = Color(0xFF0D1B2A),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
-                },
-                actions = renderActions
+                }
             )
         }
     }
